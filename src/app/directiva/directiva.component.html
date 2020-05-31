@@ -1,0 +1,9 @@
+<button class="button" (click) = "setHabilitar()" class="btn btn-primary my-3">{{ btnMensaje }}</button>
+<div class="card">
+  <div class="card-header">
+    Listado Curso
+  </div>
+  <ul class="list-group" *ngIf="habilitado == true">
+    <li class="list-group-item" *ngFor="let curso of listaCurso">{{ curso }}</li>
+  </ul>
+</div>
