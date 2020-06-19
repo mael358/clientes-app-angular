@@ -3,6 +3,10 @@
   <div class="card-body text-primary">
     <h5 class="card-title">Listado de clientes </h5>
 
+    <div class="my-2 text-left" type="button" [routerLink] = "['/clientes/form']">
+      <button class="btn btn-rounded btn-primary" name="button">Crear cliente</button>
+    </div>
+
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
@@ -14,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor = "let cliente of clientes">
+        <tr *ngFor="let cliente of clientes">
           <td>{{ cliente.id }}</td>
           <td>{{ cliente.nombre }}</td>
           <td>{{ cliente.apellido }}</td>
