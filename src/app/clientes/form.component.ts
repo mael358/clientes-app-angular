@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente} from './cliente';
 import { ClientesService } from './clientes.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 
 @Component({
@@ -13,9 +13,12 @@ export class FormComponent implements OnInit {
   public cliente: Cliente = new Cliente();
   public titulo: string = "Crear cliente";
 
-  constructor(private clienteService: ClientesService, private router: Router) { }
+  constructor(private clienteService: ClientesService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.cargarCliente();
   }
 
   public create(): void {
@@ -28,4 +31,37 @@ export class FormComponent implements OnInit {
       }
     )
   }
+
+  public cargarCliente(): void {
+    this.activatedRoute.params.subscribe(params => {
+      let id = params['id'];
+      if(id){
+        this.clienteService.getCliente(id).subscribe(
+          (cliente) => this.cliente = cliente
+        )
+      }
+    });
+  }
+
+  update(): void {
+      swal.fire({
+        title: '¿Estás seguro de editar?',
+        text: "Puedes editarlo de nuevo pero no podrás regresar los cambios.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText:'Cancelar',
+        confirmButtonText: 'Si, ¡Editalo!'
+        }).then((result) => {
+
+        if (result.value) {
+          this.clienteService.update(this.cliente).subscribe( (Cliente) => {
+            this.router.navigate(['/clientes'])
+            swal.fire('Cliente actualizado', `Cliente ${this.cliente.nombre} actualizado con éxito`, 'success');
+          })
+        }
+      })
+  }
+
 }
