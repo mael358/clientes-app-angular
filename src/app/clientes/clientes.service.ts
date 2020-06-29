@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from './cliente';
-import { of, Observable } from 'rxjs';
+import { Observable, throwError} from 'rxjs';
 import { HttpClient,  HttpHeaders} from '@angular/common/http';
-import { map } from 'rxjs/operators'
+import { map, catchError} from 'rxjs/operators';
+import swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ClientesService {
@@ -10,11 +12,13 @@ export class ClientesService {
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   //Ejemplo de GET
   getClientes(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.urlEndPoint);
+    return this.http.get<Cliente[]>(this.urlEndPoint).pipe(
+      map(response => response as Cliente[])
+    );
   }
 
   //Ejemplo de POST
@@ -22,8 +26,15 @@ export class ClientesService {
     return this.http.post<Cliente>(this.urlEndPoint, cliente, {headers: this.httpHeaders});
   }
 
-  getCliente(id): Observable<Cliente> {
-    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`)
+  getCliente(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
+      catchError(e => {
+        this.router.navigate(['/clientes']);
+        console.error(e.error.Mensaje);
+        swal.fire('Error al buscar cliente', e.error.Mensaje, 'error');
+        return throwError(e);
+      })
+    );
   }
 
   update(cliente: Cliente) : Observable<Cliente> {
