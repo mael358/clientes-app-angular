@@ -22,8 +22,9 @@ export class ClientesService {
   }
 
   //Ejemplo de POST
-  create(cliente: Cliente) : Observable<any> {
+  create(cliente: Cliente) : Observable<Cliente> {
     return this.http.post<Cliente>(this.urlEndPoint, cliente, {headers: this.httpHeaders}).pipe(
+      map ((response: any) => response.cliente as Cliente),
       catchError(e => {
         console.error(e.error.mensaje);
         swal.fire(e.error.mensaje, e.error.error, 'error');

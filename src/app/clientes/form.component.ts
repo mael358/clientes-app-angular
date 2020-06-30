@@ -25,10 +25,10 @@ export class FormComponent implements OnInit {
     console.log("Clicked!");
     console.log(this.cliente);
     this.clienteService.create(this.cliente).subscribe(
-      response => {
-        console.log(response);
+      cliente => {
+        console.log(cliente);
         this.router.navigate(['/clientes'])
-        swal.fire('Nuevo cliente', `${response.mensaje}`, 'success');
+        swal.fire('Nuevo cliente', `El cliente ${cliente.nombre} ha sido creado con éxito!`, 'success');
       }
     )
   }
