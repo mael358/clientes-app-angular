@@ -26,8 +26,10 @@
           <td>{{ cliente.id }}</td>
           <td>{{ cliente.nombre }}</td>
           <td>{{ cliente.apellido }}</td>
+          <!-- <td>{{ cliente.apellido | uppercase}}</td> FORMA DE HACERLO DESDE HTML CON PIPES-->
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.createAt }}</td>
+          <!-- <td>{{ cliente.createAt | date:"EEEE dd, MMMM yyyy"}}</td>  FORMA DE HACERLO DESDE HTML CON PIPES-->
           <td>
             <button type="button" name="button" [routerLink]="['/clientes/form', cliente.id]" class="btn btn-primary">Editar</button>
           </td>

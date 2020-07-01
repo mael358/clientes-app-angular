@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { formatDate, DatePipe } from '@angular/common';
 import { Cliente } from './cliente';
 import { Observable, throwError} from 'rxjs';
 import { HttpClient,  HttpHeaders} from '@angular/common/http';
@@ -12,12 +13,24 @@ export class ClientesService {
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,
+              ) { }
 
   //Ejemplo de GET
   getClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.urlEndPoint).pipe(
-      map(response => response as Cliente[])
+      map(response => {
+        let clientes = response as Cliente[];
+
+        return clientes.map(
+          cliente => {
+            cliente.nombre = cliente.nombre.toUpperCase();
+            cliente.apellido = cliente.apellido.toUpperCase();
+            let datePipe = new DatePipe('es');
+            cliente.createAt = datePipe.transform(cliente.createAt, 'fullDate');//formatDate(cliente.createAt, 'EEEE dd, MMMM yyyy', 'en-US');
+            return cliente;
+          });
+      })
     );
   }
 
@@ -56,7 +69,7 @@ export class ClientesService {
         if(e.status==400){
           return throwError(e);
         }
-        
+
 
         console.error(e.error.mensaje);
         swal.fire(e.error.mensaje, e.error.error, 'error');
