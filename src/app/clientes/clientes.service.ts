@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class ClientesService {
-  private urlEndPoint:string = 'http://localhost:8080/api/clientes';
+  private urlEndPoint:string = 'https://back-end-spring-rest.herokuapp.com/api/clientes';
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
