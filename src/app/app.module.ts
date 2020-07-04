@@ -9,18 +9,22 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { DirectivaComponent } from './directiva/directiva.component';
 import { ClientesComponent } from './clientes/clientes.component';
+import { PaginatorComponent } from './paginator/paginator.component';
+
 import { ClientesService } from './clientes/clientes.service';
-import { RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormComponent } from './clientes/form.component';
 import { FormsModule } from '@angular/forms';
 
+
 const routes: Routes = [
-   {path: '', redirectTo: '/clientes', pathMatch: 'full'},
-   {path: 'directivas', component: DirectivaComponent},
-   {path: 'clientes', component: ClientesComponent },
-   {path: 'clientes/form', component: FormComponent},
-   {path: 'clientes/form/:id', component: FormComponent}
+  { path: '', redirectTo: '/clientes', pathMatch: 'full' },
+  { path: 'directivas', component: DirectivaComponent },
+  { path: 'clientes', component: ClientesComponent },
+  { path: 'clientes/page/:page', component: ClientesComponent },
+  { path: 'clientes/form', component: FormComponent },
+  { path: 'clientes/form/:id', component: FormComponent }
 ];
 
 
@@ -31,7 +35,8 @@ const routes: Routes = [
     FooterComponent,
     DirectivaComponent,
     ClientesComponent,
-    FormComponent
+    FormComponent,
+    PaginatorComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,7 @@ const routes: Routes = [
   ],
   providers: [
     ClientesService,
-    {provide: LOCALE_ID, useValue: 'es' }
+    { provide: LOCALE_ID, useValue: 'es' }
   ],
   bootstrap: [
     AppComponent

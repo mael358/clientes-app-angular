@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Cliente} from './cliente';
+import { Cliente } from './cliente';
 import { ClientesService } from './clientes.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
@@ -40,7 +40,7 @@ export class FormComponent implements OnInit {
   public cargarCliente(): void {
     this.activatedRoute.params.subscribe(params => {
       let id = params['id'];
-      if(id){
+      if (id) {
         this.clienteService.getCliente(id).subscribe(
           (cliente) => this.cliente = cliente
         )
@@ -49,19 +49,19 @@ export class FormComponent implements OnInit {
   }
 
   update(): void {
-      swal.fire({
-        title: '¿Estás seguro de editar?',
-        text: "Puedes editarlo de nuevo pero no podrás regresar los cambios.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText:'Cancelar',
-        confirmButtonText: 'Si, ¡Editalo!'
-        }).then((result) => {
-        if (result.value) {
-          this.clienteService.update(this.cliente).subscribe(
-            response => {
+    swal.fire({
+      title: '¿Estás seguro de editar?',
+      text: "Puedes editarlo de nuevo pero no podrás regresar los cambios.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si, ¡Editalo!'
+    }).then((result) => {
+      if (result.value) {
+        this.clienteService.update(this.cliente).subscribe(
+          response => {
             this.router.navigate(['/clientes'])
             swal.fire('Cliente actualizado', `${response.mensaje}`, 'success');
           },
@@ -71,8 +71,8 @@ export class FormComponent implements OnInit {
             console.error(this.errors);
           }
         )
-        }
-      })
+      }
+    })
   }
 
 }
