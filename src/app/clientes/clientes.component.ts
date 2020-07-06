@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ClientesComponent implements OnInit {
 
   clientes: Cliente[];
+  paginator: any;
 
   constructor(private clienteService: ClientesService,
     private activatedRoute: ActivatedRoute) { }
@@ -22,10 +23,10 @@ export class ClientesComponent implements OnInit {
         page = 0;
       }
       this.clienteService.getClientes(page).subscribe(
-        response => this.clientes = (response.content as Cliente[])
-        //   function (response: any) {
-        //    this.clientes = ( response.content as Cliente[]);
-        // }
+        response => {
+          this.clientes = (response.content as Cliente[])
+          this.paginator = response;
+        }
       );
     });
 
