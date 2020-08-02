@@ -55,6 +55,26 @@
         </div>
       </div>
 
+
+      <div class="form-group row">
+        <label for="createAt" class="col-form-label col-sm-2">Fecha de creacion</label>
+	 <div class="col-sm-6"> <!--
+	  <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" style="display:inline; width: 300px;" required> 
+	  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+	  <mat-datepicker #picker></mat-datepicker> -->
+	  
+	  <mat-form-field class="example-full-width" appearance="fill" >
+	  <mat-label>Selecciona una fecha</mat-label>
+	  <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt">
+	  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+	  <mat-datepicker touchUi #picker></mat-datepicker>
+	  </mat-form-field>
+
+	  <!-- required -->
+        </div>
+      </div>
+
+
       <div class="form-group row px-2">
         <div class="col-sm-6">
           <button class="btn btn-primary" role="button" (click)="create()" *ngIf="!cliente.id else isUpdate" [disabled]="!clienteForm.form.valid">Crear</button>
