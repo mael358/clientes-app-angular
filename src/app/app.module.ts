@@ -22,13 +22,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 // Este import me sirve para poner a escoger la fecha al usuario
 import { MatInputModule } from '@angular/material/input';
+import { DetalleComponent } from './clientes/detalle/detalle.component';
 const routes: Routes = [
   { path: '', redirectTo: '/clientes', pathMatch: 'full' },
   { path: 'directivas', component: DirectivaComponent },
   { path: 'clientes', component: ClientesComponent },
   { path: 'clientes/page/:page', component: ClientesComponent },
   { path: 'clientes/form', component: FormComponent },
-  { path: 'clientes/form/:id', component: FormComponent }
+  { path: 'clientes/form/:id', component: FormComponent },
+  { path: 'clientes/ver/:id', component: DetalleComponent }
 ];
 
 
@@ -40,7 +42,8 @@ const routes: Routes = [
     DirectivaComponent,
     ClientesComponent,
     FormComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    DetalleComponent
   ],
   imports: [
     BrowserModule,
