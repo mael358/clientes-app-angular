@@ -17,7 +17,7 @@ export class DetalleComponent implements OnInit {
   progreso: number;
 
   constructor(private clienteService: ClientesService,
-	     public modalService: ModalService) { 
+	     public modalService: ModalService) {
   }
 
   ngOnInit(): void {
@@ -52,6 +52,8 @@ export class DetalleComponent implements OnInit {
 	  } else if (event.type === HttpEventType.Response){
 	    let response: any = event.body;
 	    this.cliente = response.cliente as Cliente;
+
+      this.modalService.notificarUpload.emit(this.cliente);
 	    swal.fire('La foto se ha subido correctamente!', `Foto: ${this.cliente.foto}`, 'success');
 	  }
 	  //this.cliente = cliente;
