@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { formatDate, DatePipe } from '@angular/common';
 import { Cliente } from './cliente';
+import { Municipio } from './municipio';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common/http';
 import { tap, map, catchError } from 'rxjs/operators';
@@ -15,6 +16,10 @@ export class ClientesService {
 
   constructor(private http: HttpClient, private router: Router,
   ) { }
+
+  getMunicipios(): Observable<Municipio[]> {
+    return this.http.get<Municipio[]>(this.urlEndPoint + "/municipios");
+  }
 
   //Ejemplo de GET
   getClientes(page: number): Observable<any> {
@@ -68,6 +73,7 @@ export class ClientesService {
   }
 
   update(cliente: Cliente): Observable<any> {
+    console.log(cliente);
     return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(
       catchError(e => {
 
@@ -102,6 +108,6 @@ export class ClientesService {
     });
 
     return this.http.request(req);
-  } 
+  }
 
 }

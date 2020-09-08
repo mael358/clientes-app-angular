@@ -3,6 +3,7 @@ import { Cliente } from './cliente';
 import { ClientesService } from './clientes.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
+import { Municipio } from './municipio';
 
 @Component({
   selector: 'app-form',
@@ -11,6 +12,7 @@ import swal from 'sweetalert2';
 export class FormComponent implements OnInit {
 
   public cliente: Cliente = new Cliente();
+  public municipios: Municipio[];
   public titulo: string = "Crear cliente";
   public errors: string[];
   constructor(private clienteService: ClientesService,
@@ -42,10 +44,13 @@ export class FormComponent implements OnInit {
       let id = params['id'];
       if (id) {
         this.clienteService.getCliente(id).subscribe(
-          (cliente) => this.cliente = cliente
+          (cliente) => {
+            this.cliente = cliente;
+          }
         )
       }
     });
+    this.clienteService.getMunicipios().subscribe(municipios => this.municipios = municipios);
   }
 
   update(): void {
@@ -73,6 +78,10 @@ export class FormComponent implements OnInit {
         )
       }
     })
+  }
+
+  compararMunicipio(m1: Municipio, m2: Municipio) {
+    return m1 === null || m2 === null ? false : m1.id === m2.id;
   }
 
 }

@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatMomentDateModule } from '@angular/material-moment-adapter'
 // Este import me sirve para poner a escoger la fecha al usuario
 import { MatInputModule } from '@angular/material/input';
 import { DetalleComponent } from './clientes/detalle/detalle.component';
@@ -50,9 +50,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     HttpClientModule,
     BrowserAnimationsModule,
-    MatDatepickerModule, 
-    MatMomentDateModule, 
-    MatInputModule
+    MatDatepickerModule,
+    MatMomentDateModule
   ],
   providers: [
     ClientesService,

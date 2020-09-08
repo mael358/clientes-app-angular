@@ -16,7 +16,7 @@
       <div class="form-group row">
         <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required  minlength="4" #nombre="ngModel"> <!-- required  minlength="4" -->
+          <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required minlength="4" #nombre="ngModel"> <!-- required  minlength="4" -->
           <div class="alert alert-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
             <div *ngIf="nombre.errors.required">
               Nombre es requerido
@@ -58,19 +58,19 @@
 
       <div class="form-group row">
         <label for="createAt" class="col-form-label col-sm-2">Fecha de creacion</label>
-	 <div class="col-sm-6"> <!--
-	  <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" style="display:inline; width: 300px;" required> 
-	  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-	  <mat-datepicker #picker></mat-datepicker> -->
-	  
-	  <mat-form-field class="example-full-width" appearance="fill" >
-	  <mat-label>Selecciona una fecha</mat-label>
-	  <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt">
-	  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-	  <mat-datepicker touchUi #picker></mat-datepicker>
-	  </mat-form-field>
+        <div class="col-sm-6">
+            <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" style="display: inline; width: 300px;" >
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+        </div>
+      </div>
 
-	  <!-- required -->
+      <div class="form-group row">
+        <label for="municipio" class="col-form-label col-sm-2">Municipio</label>
+        <div class="col-sm-6">
+          <select [compareWith]="compararMunicipio" class="form-control" [(ngModel)]="cliente.municipio" name="municipio" style="width: 500px;">
+            <option *ngFor="let municipio of municipios" [ngValue]="municipio">{{municipio.nombre}}</option>
+          </select>
         </div>
       </div>
 
