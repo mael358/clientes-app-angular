@@ -25,6 +25,7 @@ export class FormComponent implements OnInit {
   }
 
   public create(): void {
+    console.log(this.cliente)
     this.clienteService.create(this.cliente).subscribe(
       cliente => {
         console.log(cliente);
@@ -54,6 +55,7 @@ export class FormComponent implements OnInit {
   }
 
   update(): void {
+    console.log(this.cliente)
     swal.fire({
       title: '¿Estás seguro de editar?',
       text: "Puedes editarlo de nuevo pero no podrás regresar los cambios.",
@@ -73,6 +75,7 @@ export class FormComponent implements OnInit {
           err => {
             this.errors = err.error.errors as string[];
             console.error("Codigo de error desde el backend: " + err.status);
+            swal.fire('Cliente actualizado', `${this.errors[0]}`, 'error');
             console.error(this.errors);
           }
         )
@@ -80,8 +83,11 @@ export class FormComponent implements OnInit {
     })
   }
 
-  compararMunicipio(m1: Municipio, m2: Municipio) {
-    return m1 === null || m2 === null ? false : m1.id === m2.id;
+  compararMunicipio(m1: Municipio, m2: Municipio): boolean {
+    if (m1 === undefined && m2 === undefined){
+      return true;
+    }
+    return m1 === null || m2 === null || m1 === undefined || m2 === undefined ? false : m1.id === m2.id;
   }
 
 }

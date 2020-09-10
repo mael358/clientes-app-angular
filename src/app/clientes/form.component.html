@@ -59,18 +59,29 @@
       <div class="form-group row">
         <label for="createAt" class="col-form-label col-sm-2">Fecha de creacion</label>
         <div class="col-sm-6">
-            <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" style="display: inline; width: 300px;" >
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker touchUi #picker></mat-datepicker>
+          <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" required #createAt name="createAt" style="display: inline; width: 300px;">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #picker></mat-datepicker>
+          <div class="alert alert-danger" *ngIf="createAt.invalid && (createAt.dirty || createAt.touched)">
+            <div *ngIf="createAt.errors.required">
+              Fecha es requerida
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="form-group row">
         <label for="municipio" class="col-form-label col-sm-2">Municipio</label>
         <div class="col-sm-6">
-          <select [compareWith]="compararMunicipio" class="form-control" [(ngModel)]="cliente.municipio" name="municipio" style="width: 500px;">
+          <select [compareWith]="compararMunicipio" class="form-control" [(ngModel)]="cliente.municipio" required #municipio name="municipio" style="width: 500px;">
+            <option [ngValue]="undefined">--- Seleccionar un municipio  ---</option>
             <option *ngFor="let municipio of municipios" [ngValue]="municipio">{{municipio.nombre}}</option>
           </select>
+          <div class="alert alert-danger" *ngIf="municipio.invalid && (municipio.dirty || municipio.touched)">
+            <div *ngIf="municipio.errors.required">
+              Fecha es requerida
+            </div>
+          </div>
         </div>
       </div>
 
