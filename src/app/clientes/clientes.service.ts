@@ -17,8 +17,21 @@ export class ClientesService {
   constructor(private http: HttpClient, private router: Router,
   ) { }
 
+  private isNotAuthorized(e): boolean{
+    if(e.status == 401 || e.status == 403){
+      this.router.navigate(['/login']);
+      return true;
+    }
+    return false;
+  }
+
   getMunicipios(): Observable<Municipio[]> {
-    return this.http.get<Municipio[]>(this.urlEndPoint + "/municipios");
+    return this.http.get<Municipio[]>(this.urlEndPoint + "/municipios").pipe(
+      catchError(e => {
+        this.isNotAuthorized(e);
+        return throwError(e);
+      })
+    );
   }
 
   //Ejemplo de GET
@@ -49,6 +62,9 @@ export class ClientesService {
     return this.http.post<Cliente>(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
       map((response: any) => response.cliente as Cliente),
       catchError(e => {
+        if (this.isNotAuthorized(e)) {
+          return throwError(e);
+        }
 
         if (e.status == 400) {
           return throwError(e);
@@ -64,6 +80,9 @@ export class ClientesService {
   getCliente(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
+        if (this.isNotAuthorized(e)) {
+          return throwError(e);
+        }
         this.router.navigate(['/clientes']);
         console.error(e.error.mensaje);
         swal.fire('Error al buscar cliente', e.error.mensaje, 'error');
@@ -76,6 +95,9 @@ export class ClientesService {
     console.log(cliente);
     return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(
       catchError(e => {
+        if (this.isNotAuthorized(e)) {
+          return throwError(e);
+        }
 
         if (e.status == 400) {
           return throwError(e);
@@ -92,6 +114,10 @@ export class ClientesService {
   delete(id: number): Observable<Cliente> {
     return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, { headers: this.httpHeaders }).pipe(
       catchError(e => {
+        if (this.isNotAuthorized(e)) {
+          return throwError(e);
+        }
+
         console.error(e.error.mensaje);
         swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
@@ -107,7 +133,12 @@ export class ClientesService {
       reportProgress: true
     });
 
-    return this.http.request(req);
+    return this.http.request(req).pipe(
+      catchError(e => {
+        this.isNotAuthorized(e);
+        return throwError(e);
+      })
+    );
   }
 
 }
