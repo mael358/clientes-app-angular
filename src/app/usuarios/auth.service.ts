@@ -22,7 +22,8 @@ export class AuthService {
     let params = new URLSearchParams();
     params.set('grant_type', 'password');
     params.set('username', usuario.username);
-    params.set('username', usuario.password);
-    return this.http.post<any>(urlEndPoint, params, { headers: httpHeaders });
+    params.set('password', usuario.password);
+    console.log(params.toString());
+    return this.http.post<any>(urlEndPoint, params.toString(), { headers: httpHeaders });
   }
 }
