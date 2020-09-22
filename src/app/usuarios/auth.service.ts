@@ -73,4 +73,12 @@ export class AuthService {
     this._token = access_token;
     sessionStorage.setItem('token', access_token);
   }
+
+  isAuthenticated(): boolean {
+    let payload = this.obtenerPayload(this.token);
+    if (payload != null && payload.user_name && payload.user_name.lenght > 0){
+      return true;
+    }
+    return false;
+  }
 }
