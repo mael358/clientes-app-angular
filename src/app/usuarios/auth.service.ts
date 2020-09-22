@@ -81,4 +81,13 @@ export class AuthService {
     }
     return false;
   }
+
+  logout(): void{
+    this._token = null;
+    this._usuario = null;
+    sessionStorage.clear();
+    // Para  borrar objetos en session storage indivudalmente
+    //sessionStorage.removeItem('token');
+    //sessionStorage.removeItem('usuario');
+  }
 }
