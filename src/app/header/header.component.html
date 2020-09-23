@@ -21,11 +21,11 @@
       <li *ngIf="!authService.isAuthenticated()"><a routerLink="/login" class="btn btn-outline-primary">Iniciar sesión</a></li>
       <!-- Ya inicio sesion -->
       <li *ngIf="authService.isAuthenticated()" class="dropdown">
-        <button (click)="logout()" class="btn btn-outline-primary dropdown-toggle" href="#" id="dropdownMenuLink"
+        <button class="btn btn-outline-primary dropdown-toggle" href="#" id="dropdownMenuLink"
         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{authService.usuario.username}}
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <div (click)="logout()" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <button (click)="logout()" class="dropdown-item" type="submit">Cerrar sesión</button>
         </div>
       </li>
