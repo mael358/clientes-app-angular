@@ -18,7 +18,7 @@ export class DetalleComponent implements OnInit {
   progreso: number;
 
   constructor(private clienteService: ClientesService,
-       private authService: AuthService,
+       public authService: AuthService,
 	     public modalService: ModalService) {
   }
 
