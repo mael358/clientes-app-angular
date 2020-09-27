@@ -5,7 +5,6 @@ import { Municipio } from './municipio';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common/http';
 import { tap, map, catchError } from 'rxjs/operators';
-import swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AuthService } from '../usuarios/auth.service';
 
@@ -18,32 +17,8 @@ export class ClientesService {
   constructor(private http: HttpClient, private router: Router,
     private authService: AuthService) { }
 
-  private isNotAuthorized(e): boolean {
-    if (e.status == 401) {
-
-      if (this.authService.isAuthenticated()) {
-        this.authService.logout();
-      }
-      this.router.navigate(['/login']);
-      return true;
-    }
-
-    if (e.status == 403) {
-      swal.fire('Acceso denegado', `Hola ${this.authService.usuario.nombre} no tienes acceso a este recurso`, 'warning');
-      this.router.navigate(['/clientes']);
-      return true;
-    }
-
-    return false;
-  }
-
   getMunicipios(): Observable<Municipio[]> {
-    return this.http.get<Municipio[]>(this.urlEndPoint + "/municipios").pipe(
-      catchError(e => {
-        this.isNotAuthorized(e);
-        return throwError(e);
-      })
-    );
+    return this.http.get<Municipio[]>(this.urlEndPoint + "/municipios");
   }
 
   //Ejemplo de GET
@@ -74,16 +49,14 @@ export class ClientesService {
     return this.http.post<Cliente>(this.urlEndPoint, cliente).pipe(
       map((response: any) => response.cliente as Cliente),
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
-        }
 
         if (e.status == 400) {
           return throwError(e);
         }
 
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error, 'error');
+        if(e.error.mensaje){
+          console.error(e.error.mensaje);
+        }
         return throwError(e);
       })
     );
@@ -92,12 +65,10 @@ export class ClientesService {
   getCliente(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
+        if (e.status != 401 && e.error.mensaje){
+          this.router.navigate(['/clientes']);
+          console.error(e.error.mensaje);
         }
-        this.router.navigate(['/clientes']);
-        console.error(e.error.mensaje);
-        swal.fire('Error al buscar cliente', e.error.mensaje, 'error');
         return throwError(e);
       })
     );
@@ -107,17 +78,12 @@ export class ClientesService {
     console.log(cliente);
     return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente).pipe(
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
-        }
-
         if (e.status == 400) {
           return throwError(e);
         }
-
-
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error, 'error');
+        if(e.error.mensaje){
+          console.error(e.error.mensaje);
+        }
         return throwError(e);
       })
     );
@@ -126,12 +92,9 @@ export class ClientesService {
   delete(id: number): Observable<Cliente> {
     return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
+        if(e.error.mensaje){
+          console.error(e.error.mensaje);
         }
-
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
       })
     );
@@ -152,15 +115,8 @@ export class ClientesService {
       reportProgress: true,
       headers: httpHeaders
     });
-
     console.log(req)
-
-    return this.http.request(req).pipe(
-      catchError(e => {
-        this.isNotAuthorized(e);
-        return throwError(e);
-      })
-    );
+    return this.http.request(req);
   }
 
 }
