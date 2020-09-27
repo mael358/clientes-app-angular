@@ -3,7 +3,8 @@ import { Cliente } from '../cliente';
 import { ClientesService } from '../clientes.service';
 import { ModalService } from './modal.service';
 import swal from 'sweetalert2';
-import {HttpEventType} from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
+import { AuthService } from '../../usuarios/auth.service';
 
 @Component({
   selector: 'detalle-cliente',
@@ -17,6 +18,7 @@ export class DetalleComponent implements OnInit {
   progreso: number;
 
   constructor(private clienteService: ClientesService,
+       public authService: AuthService,
 	     public modalService: ModalService) {
   }
 

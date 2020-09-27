@@ -24,7 +24,7 @@
                     <input (change)="seleccionarFoto($event)" type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
                     <label class="custom-file-label" for="inputGroupFile04">Seleccionar foto</label>
                   </div>
-                  <div class="input-group-append">
+                  <div *ngIf="authService.hasRole('ROLE_ADMIN')" class="input-group-append">
                     <button (click)="subirFoto()" [disabled]="!fotoSeleccionada" class="btn btn-success" type="button" id="inputGroupFileAddon04">Subir</button>
                   </div>
                 </div>

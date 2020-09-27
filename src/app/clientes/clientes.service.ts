@@ -5,7 +5,6 @@ import { Municipio } from './municipio';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common/http';
 import { tap, map, catchError } from 'rxjs/operators';
-import swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AuthService } from '../usuarios/auth.service';
 
@@ -18,29 +17,8 @@ export class ClientesService {
   constructor(private http: HttpClient, private router: Router,
     private authService: AuthService) { }
 
-  private agregarAuthorizationHeader(){
-    let token = this.authService.token;
-    if(token != null){
-      return this.httpHeaders.append('Authorization', 'Bearer ' + token);
-    }
-    return this.httpHeaders;
-  }
-
-  private isNotAuthorized(e): boolean{
-    if(e.status == 401 || e.status == 403){
-      this.router.navigate(['/login']);
-      return true;
-    }
-    return false;
-  }
-
   getMunicipios(): Observable<Municipio[]> {
-    return this.http.get<Municipio[]>(this.urlEndPoint + "/municipios", {headers: this.agregarAuthorizationHeader()}).pipe(
-      catchError(e => {
-        this.isNotAuthorized(e);
-        return throwError(e);
-      })
-    );
+    return this.http.get<Municipio[]>(this.urlEndPoint + "/municipios");
   }
 
   //Ejemplo de GET
@@ -68,33 +46,29 @@ export class ClientesService {
 
   //Ejemplo de POST
   create(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(this.urlEndPoint, cliente, { headers: this.agregarAuthorizationHeader() }).pipe(
+    return this.http.post<Cliente>(this.urlEndPoint, cliente).pipe(
       map((response: any) => response.cliente as Cliente),
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
-        }
 
         if (e.status == 400) {
           return throwError(e);
         }
 
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error, 'error');
+        if(e.error.mensaje){
+          console.error(e.error.mensaje);
+        }
         return throwError(e);
       })
     );
   }
 
   getCliente(id: number): Observable<Cliente> {
-    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`, {headers: this.agregarAuthorizationHeader()}).pipe(
+    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
+        if (e.status != 401 && e.error.mensaje){
+          this.router.navigate(['/clientes']);
+          console.error(e.error.mensaje);
         }
-        this.router.navigate(['/clientes']);
-        console.error(e.error.mensaje);
-        swal.fire('Error al buscar cliente', e.error.mensaje, 'error');
         return throwError(e);
       })
     );
@@ -102,46 +76,38 @@ export class ClientesService {
 
   update(cliente: Cliente): Observable<any> {
     console.log(cliente);
-    return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.agregarAuthorizationHeader() }).pipe(
+    return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente).pipe(
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
-        }
-
         if (e.status == 400) {
           return throwError(e);
         }
-
-
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error, 'error');
+        if(e.error.mensaje){
+          console.error(e.error.mensaje);
+        }
         return throwError(e);
       })
     );
   }
 
   delete(id: number): Observable<Cliente> {
-    return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, { headers: this.agregarAuthorizationHeader() }).pipe(
+    return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        if (this.isNotAuthorized(e)) {
-          return throwError(e);
+        if(e.error.mensaje){
+          console.error(e.error.mensaje);
         }
-
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
       })
     );
   }
 
-  subirFoto(archivo: File, id): Observable<HttpEvent<{}>>{
+  subirFoto(archivo: File, id): Observable<HttpEvent<{}>> {
     let formData = new FormData();
     formData.append("archivo", archivo);
     formData.append("id", id);
 
     let httpHeaders = new HttpHeaders();
     let token = this.authService.token;
-    if (token != null){
+    if (token != null) {
       httpHeaders = httpHeaders.append('Authorization', 'Bearer ' + token);
     }
 
@@ -149,15 +115,8 @@ export class ClientesService {
       reportProgress: true,
       headers: httpHeaders
     });
-
     console.log(req)
-
-    return this.http.request(req).pipe(
-      catchError(e => {
-        this.isNotAuthorized(e);
-        return throwError(e);
-      })
-    );
+    return this.http.request(req);
   }
 
 }
