@@ -1,4 +1,5 @@
-import { Municipio } from './municipio';
+import {Municipio} from './municipio';
+import {Factura} from '../facturas/models/factura';
 
 export class Cliente {
   id: number;
@@ -8,4 +9,5 @@ export class Cliente {
   email: string;
   foto: string;
   municipio: Municipio;
+  facturas: Array<Factura> = [];
 }
