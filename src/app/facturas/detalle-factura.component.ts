@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { Factura } from '../models/factura';
+import { Factura } from './models/factura';
 
 
 @Component({
