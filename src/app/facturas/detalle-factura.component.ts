@@ -11,7 +11,7 @@ import { FacturaService } from './services/factura.service';
 export class DetalleFacturaComponent implements OnInit {
 
   factura: Factura;
-  titulo: 'Factura';
+  titulo: string = 'Factura';
 
   constructor(private facturasService: FacturaService,
   private activatedRoute: ActivatedRoute) { }
