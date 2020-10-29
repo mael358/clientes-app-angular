@@ -40,6 +40,10 @@
                 <img *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{ cliente.foto }}" alt="{{ cliente.foto }}" class="img-thumbnail rounded">
               </div>
             </div>
+            <div class="row">
+              <td><button type="button" class="btn btn-success btn-sm"
+                [routerLink]="['/facturas/form', cliente.id]">Facturar</button></td>
+            </div>
             <div class="row" *ngIf="cliente.facturas.length != 0">
               <table class="table table-bordered table-striped my-4">
                 <thead>
