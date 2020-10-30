@@ -54,9 +54,9 @@ export class FacturasComponent implements OnInit {
     let producto = event.option.value as Producto;
     console.log(producto);
 
-    if(this.existeItem(producto.id)){
+    if (this.existeItem(producto.id)) {
       this.incrementarCantidad(producto.id);
-    }else{
+    } else {
       let nuevoItem = new ItemFactura();
       nuevoItem.producto = producto;
       this.factura.items.push(nuevoItem);
@@ -70,6 +70,9 @@ export class FacturasComponent implements OnInit {
 
   actualizarCantidad(id: number, event: any): void {
     let cantidad: number = event.target.value as number;
+    if (cantidad == 0) {
+      return this.eliminarItemFactura(id);
+    }
     this.factura.items = this.factura.items.map((item: ItemFactura) => {
       if (id === item.producto.id) {
         item.cantidad = cantidad;
@@ -81,7 +84,7 @@ export class FacturasComponent implements OnInit {
   existeItem(id: number): boolean {
     let existe = false;
     this.factura.items.forEach((item: ItemFactura) => {
-      if(id === item.producto.id){
+      if (id === item.producto.id) {
         existe = true;
       }
     })
@@ -95,6 +98,10 @@ export class FacturasComponent implements OnInit {
       }
       return item;
     })
+  }
+
+  eliminarItemFactura(id: number): void {
+    this.factura.items = this.factura.items.filter((item: ItemFactura) => id !== item.producto.id)
   }
 
 }
