@@ -54,7 +54,8 @@
           <tr *ngFor="let item of factura.items">
             <td>{{item.producto.nombre}}</td>
             <td>{{item.producto.precio}}</td>
-            <td>{{item.cantidad}}</td>
+            <td><input type="number" value="{{item.cantidad}}" class="form-control col-sm-4"
+              (change)="actualizarCantidad(item.producto.id, $event)"></td>
             <td>{{item.calcularLinea()}}</td>
           </tr>
         </tbody>

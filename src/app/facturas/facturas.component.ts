@@ -10,7 +10,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { flatMap } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import {ItemFactura} from './models/item-factura';
+import { ItemFactura } from './models/item-factura';
 
 @Component({
   selector: 'app-facturas',
@@ -46,7 +46,7 @@ export class FacturasComponent implements OnInit {
     return this.facturaService.filtrarProductos(filterValue);
   }
 
-  mostrarNombre(producto?: Producto): string | undefined{
+  mostrarNombre(producto?: Producto): string | undefined {
     return producto ? producto.nombre : undefined;
   }
 
@@ -62,6 +62,16 @@ export class FacturasComponent implements OnInit {
     event.option.focus();
     event.option.deselect();
 
+  }
+
+  actualizarCantidad(id: number, event: any): void {
+    let cantidad: number = event.target.value as number;
+    this.factura.items = this.factura.items.map((item: ItemFactura) => {
+      if (id === item.producto.id) {
+        item.cantidad = cantidad;
+      }
+      return item;
+    })
   }
 
 }
