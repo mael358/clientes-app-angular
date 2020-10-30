@@ -54,9 +54,13 @@ export class FacturasComponent implements OnInit {
     let producto = event.option.value as Producto;
     console.log(producto);
 
-    let nuevoItem = new ItemFactura();
-    nuevoItem.producto = producto;
-    this.factura.items.push(nuevoItem);
+    if(this.existeItem(producto.id)){
+      this.incrementarCantidad(producto.id);
+    }else{
+      let nuevoItem = new ItemFactura();
+      nuevoItem.producto = producto;
+      this.factura.items.push(nuevoItem);
+    }
 
     this.autoCompleteControl.setValue('');
     event.option.focus();
@@ -69,6 +73,25 @@ export class FacturasComponent implements OnInit {
     this.factura.items = this.factura.items.map((item: ItemFactura) => {
       if (id === item.producto.id) {
         item.cantidad = cantidad;
+      }
+      return item;
+    })
+  }
+
+  existeItem(id: number): boolean {
+    let existe = false;
+    this.factura.items.forEach((item: ItemFactura) => {
+      if(id === item.producto.id){
+        existe = true;
+      }
+    })
+    return existe;
+  }
+
+  incrementarCantidad(id: number): void {
+    this.factura.items = this.factura.items.map((item: ItemFactura) => {
+      if (id === item.producto.id) {
+        ++item.cantidad;
       }
       return item;
     })
