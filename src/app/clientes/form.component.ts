@@ -56,6 +56,7 @@ export class FormComponent implements OnInit {
 
   update(): void {
     console.log(this.cliente)
+    this.cliente.facturas = null;
     swal.fire({
       title: '¿Estás seguro de editar?',
       text: "Puedes editarlo de nuevo pero no podrás regresar los cambios.",
