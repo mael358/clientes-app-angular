@@ -9,7 +9,7 @@ import { Producto } from '../models/producto';
 })
 export class FacturaService {
 
-  private urlEndPoint: string = 'http://localhost:8080/api/facturas';
+  public urlEndPoint: string = 'http://localhost:8080/api/facturas';
 
   constructor(private http: HttpClient) { }
 
@@ -23,5 +23,9 @@ export class FacturaService {
 
   filtrarProductos(term: string): Observable<Producto[]>{
     return this.http.get<Producto[]>(`${this.urlEndPoint}/filtrar-productos/${term}`);
+  }
+
+  create(factura: Factura): Observable<Factura>{
+    return this.http.post<Factura>(`${this.urlEndPoint}`, factura);
   }
 }

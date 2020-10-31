@@ -5,7 +5,7 @@
       <a [routerLink]="['/clientes']" class="btn btn-light btn-xs">&laquo; volver</a>
     </h4>
 
-    <form>
+    <form #facturaForm="ngForm">
 
       <div class="form-group row" *ngIf="factura.cliente">
         <label for="" class="col-sm-2 col-form-label">Cliente</label>
@@ -17,7 +17,11 @@
       <div class="form-group row">
         <label for="" class="col-sm-2 col-form-label">Descripción</label>
         <div class="col-sm-6">
-          <input type="text" name="descripcion" [(ngModel)]="factura.descripcion" class="form-control" />
+          <input type="text" name="descripcion" [(ngModel)]="factura.descripcion"
+          class="form-control" required #descripcion="ngModel"/>
+          <div class="alert alert-danger" *ngIf="descripcion.invalid && descripcion.touched">
+            La descripcion es requerida
+          </div>
         </div>
       </div>
 
@@ -41,7 +45,7 @@
         </div>
       </div>
 
-      <table class="table table-striped table-hover table-sm">
+      <table class="table table-striped table-hover table-sm" *ngIf="factura.items.length > 0">
         <thead>
           <tr>
             <th>Producto</th>
@@ -63,12 +67,20 @@
           </tr>
         </tbody>
       </table>
+      <h3 *ngIf="factura.items.length > 0" class="float-right">Gran total:
+        <span class="badge badge-secondary">{{factura.calcularGranTotal()}}</span></h3>
+
+        <div class="alert alert-info my-4" *ngIf="factura.items.length == 0">
+          No hay lineas asignadas para la factura debe agregar almenos una.
+        </div>
 
       <div class="form-group row">
         <div class="col-sm-6">
-          <input type="submit" value="Crear factura" class="btn btn-secondary" />
+          <input type="submit" (click)="create()" value="Crear factura" class="btn btn-secondary"
+           [disabled]="facturaForm.form.invalid || factura.items.length == 0"/>
         </div>
       </div>
+
 
     </form>
   </div>
