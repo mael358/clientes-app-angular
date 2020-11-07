@@ -8,9 +8,11 @@ import { tap, map, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../usuarios/auth.service';
 
+import { URL_BACKEND } from '../config/config';
+
 @Injectable()
 export class ClientesService {
-  private urlEndPoint: string = 'http://localhost:8080/api/clientes';
+  private urlEndPoint: string = URL_BACKEND + '/api/clientes';
 
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 

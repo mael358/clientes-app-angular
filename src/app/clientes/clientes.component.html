@@ -26,8 +26,8 @@
       <tbody>
         <tr *ngFor="let cliente of clientes">
           <td *ngIf="authService.hasRole('ROLE_USER')">
-            <img *ngIf="cliente?.foto" (click)="abrirModal(cliente)" src="http://localhost:8080/api/uploads/img/{{ cliente.foto }}" alt="{{ cliente.foto }}" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
-            <img *ngIf="!cliente?.foto" (click)="abrirModal(cliente)" src="http://localhost:8080/images/not-user.png" alt="Sin foto" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
+            <img *ngIf="cliente?.foto" (click)="abrirModal(cliente)" src="{{urlBackend}}/api/uploads/img/{{ cliente.foto }}" alt="{{ cliente.foto }}" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
+            <img *ngIf="!cliente?.foto" (click)="abrirModal(cliente)" src="{{urlBackend}}/images/not-user.png" alt="Sin foto" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
           </td>
           <td>{{ cliente.nombre }}</td>
           <td>{{ cliente.apellido }}</td>
