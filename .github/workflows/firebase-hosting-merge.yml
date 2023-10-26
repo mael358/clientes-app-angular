@@ -17,4 +17,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLIENTES_CRM_DEMO }}'
           channelId: live
+          entryPoint: ./dist
           projectId: clientes-crm-demo
